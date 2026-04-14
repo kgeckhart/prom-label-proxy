@@ -31,7 +31,6 @@ import (
 	"github.com/oklog/run"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/collectors"
-	"github.com/prometheus/prometheus/promql/parser"
 
 	"github.com/prometheus-community/prom-label-proxy/injectproxy"
 )
@@ -193,8 +192,12 @@ func main() {
 		extractLabeler = injectproxy.HTTPHeaderEnforcer{Name: http.CanonicalHeaderKey(headerName), ParseListSyntax: headerUsesListSyntax}
 	}
 
-	parser.ExperimentalDurationExpr = promQLDurationExpressionParsing
-	parser.EnableExperimentalFunctions = promQLExperimentalFunctions
+	// TODO: parser.ExperimentalDurationExpr and parser.EnableExperimentalFunctions were
+	// removed as package-level globals in Prometheus v0.311+. The --enable-promql-duration-expression-parsing
+	// and --enable-promql-experimental-functions flags are currently no-ops; threading
+	// parser.Options through the API is left as a follow-up.
+	_ = promQLDurationExpressionParsing
+	_ = promQLExperimentalFunctions
 
 	var g run.Group
 	{

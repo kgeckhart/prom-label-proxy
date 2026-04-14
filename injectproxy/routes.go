@@ -708,7 +708,7 @@ func injectMatcher(q url.Values, matcher *labels.Matcher) error {
 
 	// Inject label into existing matchers.
 	for i, m := range matchers {
-		ms, err := parser.ParseMetricSelector(m)
+		ms, err := parser.NewParser(parser.Options{}).ParseMetricSelector(m)
 		if err != nil {
 			return err
 		}

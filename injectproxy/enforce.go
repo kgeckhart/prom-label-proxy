@@ -54,7 +54,7 @@ var (
 
 // Enforce the label matchers in a PromQL expression.
 func (ms *PromQLEnforcer) Enforce(q string) (string, error) {
-	expr, err := parser.ParseExpr(q)
+	expr, err := parser.NewParser(parser.Options{}).ParseExpr(q)
 	if err != nil {
 		return "", fmt.Errorf("%w: %w", ErrQueryParse, err)
 	}
