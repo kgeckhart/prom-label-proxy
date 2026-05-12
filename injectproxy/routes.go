@@ -149,10 +149,13 @@ func WithRegexMatch() Option {
 }
 
 // WithPromqlDurationExpressionParsing enables parsing of duration expressions in the PromQL parser.
+//
+// As of Prometheus v3.12 main (commit 1463a5bb5a6f, "PromQL: Promote duration expressions
+// as stable"), duration expressions are always-on and the parser.Options.ExperimentalDurationExpr
+// field was removed. This setter is now a no-op and is kept only so existing callers
+// (and the --enable-promql-duration-expression-parsing CLI flag) still compile.
 func WithPromqlDurationExpressionParsing() Option {
-	return optionFunc(func(o *options) {
-		o.parserOptions.ExperimentalDurationExpr = true
-	})
+	return optionFunc(func(_ *options) {})
 }
 
 // WithPromqlExperimentalFunctions enables parsing of experimental functions in the PromQL parser.
